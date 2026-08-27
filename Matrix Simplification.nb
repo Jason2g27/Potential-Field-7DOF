@@ -1,0 +1,812 @@
+(* Content-type: application/vnd.wolfram.cdf.text *)
+
+(*** Wolfram CDF File ***)
+(* http://www.wolfram.com/cdf *)
+
+(* CreatedBy='Wolfram 15.0' *)
+
+(*************************************************************************)
+(*                                                                       *)
+(*                                                                       *)
+(*  This file was created under the Wolfram Enterprise licensing terms.  *)
+(*                                                                       *)
+(*       For additional information concerning CDF licensing see:        *)
+(*                                                                       *)
+(*        www.wolfram.com/cdf/adopting-cdf/licensing-options.html        *)
+(*                                                                       *)
+(*                                                                       *)
+(*                                                                       *)
+(*************************************************************************)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[      1060,         20]
+NotebookDataLength[     29126,        791]
+NotebookOptionsPosition[     28619,        775]
+NotebookOutlinePosition[     29054,        792]
+CellTagsIndexPosition[     29011,        789]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Set", " ", 
+    RowBox[{"Mathematica", "'"}], "s", " ", "path", " ", "to", " ", "match", " ",
+     "your", " ", "MATLAB", " ", "directory"}], "*)"}], 
+  RowBox[{
+   RowBox[{
+   "SetDirectory", 
+    "[", "\"\<C:/Users/srsin/Downloads/Compressed/Robotics \
+Project/Codes/SelfInteractiveAAN_SIAAN-arm_simulator - Copy\>\"", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "==="}], "="}], "*)"}], 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"THE", " ", "DEFINITIVE", " ", "4"}], "-", 
+     RowBox[{
+     "STEP", " ", "SEQUENTIAL", " ", "JOINT", " ", "COMPRESSION", " ", 
+      "PIPELINE"}]}], "*)"}], 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "==="}], "="}], "*)"}], 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "[", 
+        RowBox[{"Kernels", "[", "]"}], "]"}], "==", "0"}], ",", 
+      RowBox[{"LaunchKernels", "[", "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"ClearAll", "[", 
+     RowBox[{
+     "myMatrix", ",", "step1", ",", "step2", ",", "step3", ",", "step4", ",", 
+      "myAssumptions"}], "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"myMatrix", "=", 
+     RowBox[{"ToExpression", "[", 
+      RowBox[{"Import", "[", 
+       RowBox[{"\"\<matrix_for_mathematica_C.txt\>\"", ",", "\"\<Text\>\""}], 
+       "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"EDIT", " ", "THIS", " ", 
+     RowBox[{"LINE", ":", 
+      RowBox[{
+      "Add", " ", "your", " ", "actual", " ", "physical", " ", "variables", " ", 
+       RowBox[{"(", 
+        RowBox[{"angles", ",", "mass", ",", "lengths"}], ")"}]}]}]}], "*)"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"myAssumptions", "=", 
+     RowBox[{"Element", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "t1", ",", "t2", ",", "t3", ",", "t4", ",", "t5", ",", "t6", ",", 
+         "t7", ",", "lu", ",", "lf", ",", "luc", ",", "lfc", ",", "lwc", ",", 
+         "Ixx3", ",", "Iyy3", ",", "Izz3", ",", "Ixx7", ",", "Iyy7", ",", 
+         "Izz7", ",", "Ixx5", ",", ",", "Iyy5", ",", "Izz5", ",", "Ixx3", ",",
+          "Iyy3", ",", "Izz3", ",", "Ixx7", ",", "Iyy7", ",", "Izz7", ",", 
+         "Ixx5", ",", ",", "Iyy5", ",", "Izz5", ",", "td1", ",", "tdd1", ",", 
+         "td2", ",", "tdd2", ",", "td3", ",", "tdd3", ",", "td4", ",", "tdd4",
+          ",", "td5", ",", "tdd5", ",", "td6", ",", "tdd6", ",", "td7", ",", 
+         "tdd7"}], "}"}], ",", "Reals"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"STEP", " ", "1"}], ":", 
+     RowBox[{"Pure", " ", "FactorTerms", " ", 
+      RowBox[{"(", "OUTSIDE", ")"}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Goal", ":", 
+     RowBox[{
+      RowBox[{"Instantly", " ", "yank", " ", "out", " ", "low"}], "-", 
+      RowBox[{
+      "hanging", " ", "common", " ", "variables", " ", "before", " ", "heavy",
+        " ", 
+       RowBox[{"rules", "."}]}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Executing Step 1: Initial FactorTerms...\>\"", "]"}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"step1", "=", 
+     RowBox[{"ParallelMap", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"FactorTerms", "[", "#", "]"}], "&"}], ",", "myMatrix", ",", 
+       RowBox[{"{", "2", "}"}], ",", 
+       RowBox[{"DistributedContexts", "->", "Automatic"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"STEP", " ", "2"}], ":", 
+     RowBox[{
+     "Sequential", " ", "Collect", " ", "with", " ", "Unlimited", " ", 
+      "Simplify", " ", 
+      RowBox[{"(", "INSIDE", ")"}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Goal", ":", 
+      RowBox[{"Group", " ", "raw", " ", "variables"}]}], ",", 
+     RowBox[{"then", " ", "trig", " ", 
+      RowBox[{"blocks", ".", "Simplify"}], " ", "inner", " ", 
+      RowBox[{"coefficients", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Executing Step 2: Two-Stage Collect with Simplify...\>\
+\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"step2", "=", 
+     RowBox[{"ParallelMap", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"rawVars", "=", 
+             RowBox[{"Variables", "[", 
+              RowBox[{"Level", "[", 
+               RowBox[{"#", ",", 
+                RowBox[{"{", 
+                 RowBox[{"-", "1"}], "}"}]}], "]"}], "]"}]}], ",", 
+            RowBox[{"trigVars", "=", 
+             RowBox[{"Union", "[", 
+              RowBox[{"Cases", "[", 
+               RowBox[{"#", ",", 
+                RowBox[{"_Sin", "|", "_Cos"}], ",", "Infinity"}], "]"}], 
+              "]"}]}]}], "}"}], ",", 
+          RowBox[{"Module", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"stageA", ",", "stageB"}], "}"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"Stage", " ", 
+               RowBox[{"A", ":", 
+                RowBox[{
+                "Group", " ", "raw", " ", "variables", " ", "first"}]}]}], ",", 
+              RowBox[{"simplifying", " ", "pieces"}]}], "*)"}], 
+            RowBox[{
+             RowBox[{"stageA", "=", 
+              RowBox[{"Collect", "[", 
+               RowBox[{"#", ",", "rawVars", ",", 
+                RowBox[{
+                 RowBox[{"Simplify", "[", 
+                  RowBox[{"#", ",", 
+                   RowBox[{"Assumptions", "->", "myAssumptions"}]}], "]"}], 
+                 "&"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"Stage", " ", 
+                RowBox[{"B", ":", 
+                 RowBox[{
+                 "Group", " ", "trig", " ", "functions", " ", "on", " ", 
+                  "top", " ", "of", " ", "Stage", " ", "A"}]}]}], ",", 
+               RowBox[{"simplifying", " ", "pieces"}]}], "*)"}], 
+             RowBox[{"stageB", "=", 
+              RowBox[{"Collect", "[", 
+               RowBox[{"stageA", ",", "trigVars", ",", 
+                RowBox[{
+                 RowBox[{"Simplify", "[", 
+                  RowBox[{"#", ",", 
+                   RowBox[{"Assumptions", "->", "myAssumptions"}]}], "]"}], 
+                 "&"}]}], "]"}]}], ";", "\[IndentingNewLine]", "stageB"}]}], 
+           "]"}]}], "]"}], "&"}], ",", "step1", ",", 
+       RowBox[{"{", "2", "}"}], ",", 
+       RowBox[{"DistributedContexts", "->", "Automatic"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"STEP", " ", "3"}], ":", 
+     RowBox[{"Secondary", " ", "Pure", " ", "FactorTerms", " ", 
+      RowBox[{"(", "OUTSIDE", ")"}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Goal", ":", 
+     RowBox[{
+     "Pull", " ", "out", " ", "new", " ", "common", " ", "multipliers", " ", 
+      "exposed", " ", "by", " ", "Step", " ", 
+      RowBox[{"2", "'"}], "s", " ", 
+      RowBox[{"simplifications", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Executing Step 3: Secondary FactorTerms...\>\"", "]"}],
+     ";"}], "\n", 
+   RowBox[{
+    RowBox[{"step3", "=", 
+     RowBox[{"ParallelMap", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"FactorTerms", "[", "#", "]"}], "&"}], ",", "step2", ",", 
+       RowBox[{"{", "2", "}"}], ",", 
+       RowBox[{"DistributedContexts", "->", "Automatic"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"STEP", " ", "4"}], ":", 
+     RowBox[{
+     "Sequential", " ", "Collect", " ", "with", " ", "Unlimited", " ", 
+      "FullSimplify", " ", 
+      RowBox[{"(", "INSIDE", ")"}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Goal", ":", 
+     RowBox[{
+     "Deep", " ", "trigonometric", " ", "factorization", " ", "and", " ", 
+      "reduction", " ", "on", " ", 
+      RowBox[{"coefficients", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}]}]}]}]}]}]}]}]}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Executing Step 4: Two-Stage Collect with \
+FullSimplify...\>\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"step4", "=", 
+     RowBox[{"ParallelMap", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"rawVars", "=", 
+             RowBox[{"Variables", "[", 
+              RowBox[{"Level", "[", 
+               RowBox[{"#", ",", 
+                RowBox[{"{", 
+                 RowBox[{"-", "1"}], "}"}]}], "]"}], "]"}]}], ",", 
+            RowBox[{"trigVars", "=", 
+             RowBox[{"Union", "[", 
+              RowBox[{"Cases", "[", 
+               RowBox[{"#", ",", 
+                RowBox[{"_Sin", "|", "_Cos"}], ",", "Infinity"}], "]"}], 
+              "]"}]}]}], "}"}], ",", 
+          RowBox[{"Module", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"stageA", ",", "stageB"}], "}"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{"Stage", " ", 
+              RowBox[{"A", ":", 
+               RowBox[{
+               "Deep", " ", "variable", " ", "grouping", " ", "and", " ", 
+                "algebraic", " ", "analysis"}]}]}], "*)"}], 
+            RowBox[{
+             RowBox[{"stageA", "=", 
+              RowBox[{"Collect", "[", 
+               RowBox[{"#", ",", "rawVars", ",", 
+                RowBox[{
+                 RowBox[{"FullSimplify", "[", 
+                  RowBox[{"#", ",", 
+                   RowBox[{"Assumptions", "->", "myAssumptions"}]}], "]"}], 
+                 "&"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Stage", " ", 
+               RowBox[{"B", ":", 
+                RowBox[{
+                 RowBox[{
+                 "Deep", " ", "trigonometric", " ", "grouping", " ", "and", " ",
+                   "cross"}], "-", "reduction"}]}]}], "*)"}], 
+             RowBox[{"stageB", "=", 
+              RowBox[{"Collect", "[", 
+               RowBox[{"stageA", ",", "trigVars", ",", 
+                RowBox[{
+                 RowBox[{"FullSimplify", "[", 
+                  RowBox[{"#", ",", 
+                   RowBox[{"Assumptions", "->", "myAssumptions"}]}], "]"}], 
+                 "&"}]}], "]"}]}], ";", "\[IndentingNewLine]", "stageB"}]}], 
+           "]"}]}], "]"}], "&"}], ",", "step3", ",", 
+       RowBox[{"{", "2", "}"}], ",", 
+       RowBox[{"DistributedContexts", "->", "Automatic"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "==="}], "="}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"POST", "-", "PROCESSING"}], "&"}], " ", "EXPORT"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "==="}], "="}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"finalMatrix", "=", 
+     RowBox[{"ComplexExpand", "[", 
+      RowBox[{
+       RowBox[{"ExpToTrig", "[", "step4", "]"}], ",", 
+       RowBox[{"TargetFunctions", "->", 
+        RowBox[{"{", 
+         RowBox[{"Sin", ",", "Cos"}], "}"}]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"Export", "[", 
+     RowBox[{"\"\<matrix_from_mathematica_C.txt\>\"", ",", 
+      RowBox[{"InputForm", "[", "finalMatrix", "]"}], ",", "\"\<Text\>\""}], 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Optimization Pipeline Complete! Compressed matrix \
+saved to text file.\>\"", "]"}], ";"}], "\n", "\n"}]}]], "Input",
+ CellChangeTimes->{{3.991002045455921*^9, 3.991002045455921*^9}, {
+   3.9910021975829964`*^9, 3.9910022990023613`*^9}, {3.9910023434435177`*^9, 
+   3.991002352341223*^9}, 3.9910025773439884`*^9, 3.9910026618522587`*^9, {
+   3.9910027780806465`*^9, 3.99100277990205*^9}},
+ CellLabel->"In[49]:=",ExpressionUUID->"06189816-a585-c340-83cf-f655e4532749"],
+
+Cell[BoxData["\<\"C:\\\\Users\\\\srsin\\\\Downloads\\\\Compressed\\\\Robotics \
+Project\\\\Codes\\\\SelfInteractiveAAN_SIAAN-arm_simulator - Copy\"\>"], \
+"Output",
+ CellChangeTimes->{
+  3.991002362751932*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.9910027947211113`*^9},
+ CellLabel->"Out[49]=",ExpressionUUID->"39039736-2cae-2d46-bc04-129574a5d161"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Executing Step 1: Initial FactorTerms...\"\>"], "Print",
+ CellChangeTimes->{
+  3.9910023743928833`*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.991002794995388*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"60a45668-e7ee-3041-9646-f9090618a193"],
+
+Cell[BoxData["\<\"Executing Step 2: Two-Stage Collect with Simplify...\"\>"], \
+"Print",
+ CellChangeTimes->{
+  3.9910023743928833`*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.991002800761133*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"b16d4de2-a980-5745-a24b-f2d3d9e07271"]
+}, Open  ]],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{
+  3.991002362751932*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.9910035083728104`*^9},
+ CellLabel->"Out[57]=",ExpressionUUID->"ec8e5039-12eb-a443-9662-738d791629c3"],
+
+Cell[BoxData["\<\"Executing Step 3: Secondary FactorTerms...\"\>"], "Print",
+ CellChangeTimes->{
+  3.9910023743928833`*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.9910035083728104`*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"b7702b98-f890-b745-b1e1-d03084d6492e"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "ParallelMap", "nopar1a", 
+   "\"This form of \\!\\(\\*RowBox[{\\\"ParallelMap\\\"}]\\)[\[Ellipsis]] \
+cannot be parallelized; proceeding with sequential evaluation.\"", 2, 59, 19, 
+   25341634213742690064, "Local"},
+  "MessageTemplate",
+  BaseStyle->"MSG"]], "Message",
+ CellChangeTimes->{
+  3.991002374371685*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.9910035083728104`*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"4c2b5a29-1b3c-f74c-b1fb-5f7f0ddd710f"],
+
+Cell[BoxData["\<\"Executing Step 4: Two-Stage Collect with \
+FullSimplify...\"\>"], "Print",
+ CellChangeTimes->{
+  3.9910023743928833`*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.9910035083878136`*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"5b41d7e7-9fda-494d-a016-018c9d59e909"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "ParallelMap", "nopar1a", 
+   "\"This form of \\!\\(\\*RowBox[{\\\"ParallelMap\\\"}]\\)[\[Ellipsis]] \
+cannot be parallelized; proceeding with sequential evaluation.\"", 2, 61, 20, 
+   25341634213742690064, "Local"},
+  "MessageTemplate",
+  BaseStyle->"MSG"]], "Message",
+ CellChangeTimes->{
+  3.991002374371685*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.9910035083878136`*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"37436410-6c6b-3e47-922f-de4d585f6eeb"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "ComplexExpand", "exf", 
+   "\"The value of the option TargetFunctions -> \\!\\(\\*RowBox[{\\\"{\\\", \
+RowBox[{\\\"Sin\\\", \\\",\\\", \\\"Cos\\\"}], \\\"}\\\"}]\\) does not \
+contain any of the allowed functions \\!\\(\\*RowBox[{\\\"{\\\", \
+RowBox[{\\\"Re\\\", \\\",\\\", \\\"Im\\\", \\\",\\\", \\\"Abs\\\", \\\",\\\", \
+\\\"Arg\\\", \\\",\\\", \\\"Conjugate\\\", \\\",\\\", \\\"Sign\\\"}], \\\"}\\\
+\"}]\\).\"", 2, 62, 21, 25341634213742690064, "Local"},
+  "MessageTemplate",
+  BaseStyle->"MSG"]], "Message",
+ CellChangeTimes->{
+  3.991002374371685*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.991003508394821*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"8c09d357-75ef-5845-a224-e7ec866b6793"],
+
+Cell[BoxData["\<\"Optimization Pipeline Complete! Compressed matrix saved to \
+text file.\"\>"], "Print",
+ CellChangeTimes->{
+  3.9910023743928833`*^9, {3.9910027533235188`*^9, 3.991002756928316*^9}, 
+   3.991003508394821*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"17e04d64-3745-364e-aead-93e4ac8f7d3c"]
+}, Open  ]]
+},
+WindowSize->{1152, 615.6},
+WindowMargins->{{
+  Automatic, -5.399999999999864}, {-5.399999999999977, Automatic}},
+FrontEndVersion->"15.0 for Microsoft Windows (64-bit) (May 19, 2026)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"730790cd-cbd1-cb41-8a24-2292e94fc63d"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[1482, 35, 23068, 629, 1284, "Input",ExpressionUUID->"06189816-a585-c340-83cf-f655e4532749"],
+Cell[24553, 666, 364, 6, 32, "Output",ExpressionUUID->"39039736-2cae-2d46-bc04-129574a5d161"],
+Cell[CellGroupData[{
+Cell[24942, 676, 300, 6, 22, "Print",ExpressionUUID->"60a45668-e7ee-3041-9646-f9090618a193"],
+Cell[25245, 684, 314, 7, 22, "Print",ExpressionUUID->"b16d4de2-a980-5745-a24b-f2d3d9e07271"]
+}, Open  ]],
+Cell[25574, 694, 235, 4, 32, "Output",ExpressionUUID->"ec8e5039-12eb-a443-9662-738d791629c3"],
+Cell[25812, 700, 304, 6, 22, "Print",ExpressionUUID->"b7702b98-f890-b745-b1e1-d03084d6492e"],
+Cell[26119, 708, 527, 13, 26, "Message",ExpressionUUID->"4c2b5a29-1b3c-f74c-b1fb-5f7f0ddd710f"],
+Cell[26649, 723, 320, 7, 22, "Print",ExpressionUUID->"5b41d7e7-9fda-494d-a016-018c9d59e909"],
+Cell[26972, 732, 527, 13, 26, "Message",ExpressionUUID->"37436410-6c6b-3e47-922f-de4d585f6eeb"],
+Cell[27502, 747, 767, 16, 26, "Message",ExpressionUUID->"8c09d357-75ef-5845-a224-e7ec866b6793"],
+Cell[28272, 765, 331, 7, 22, "Print",ExpressionUUID->"17e04d64-3745-364e-aead-93e4ac8f7d3c"]
+}, Open  ]]
+}
+]
+*)
+
