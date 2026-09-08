@@ -1,5 +1,6 @@
 function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajectory2, impairment2, torquelimit, model, controller_type, plot_freq, debug,start_pos, end_pos)
-    
+    videop = VideoWriter('my_plot_video.mp4', 'MPEG-4');
+    videop.FrameRate = 30;
     hist = zeros (7,6);
     Torque_Wrist=0;
     brc=0;
@@ -143,11 +144,19 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
      fig_simu01 = figure();
      figure(fig_simu01);
      surf(Theta21,Theta21,UUla2);
+     grid on;
      title('Elbow potential field');
+     xlabel('\theta_{4}');
+     ylabel('\theta_{5}');
+     zlabel('\U_{elbow}');
      fig_simu02 = figure();
-     figure(fig_simu02);    
+     figure(fig_simu02);     
      surf(Theta21,Theta21,UUw2);
+     grid on;
      title('Wrist potential field');
+     xlabel('\theta_{4}');
+     ylabel('\theta_{5}');
+     zlabel('\U_{wrist}');
      % Plotting the Potential field end;
 
     %diffsua = Thetauapp - Thetauap;
@@ -191,7 +200,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
     
 
     
-    
+    open(videop);
     if debug
         arm = kinematicAnalysis(model, state);
         fig_simu = figure();
@@ -228,7 +237,9 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         endpoint_elbow.Color(4) = 0.7; 
         endpoint_wrist.Color(4) = 0.7;
         endpoint_tip.Color(4) = 0.7;
-
+        
+        frame = getframe(fig_simu);
+        writeVideo(videop, frame);
         %arr_elbow = plotContact(arm.pos_elbow, 0, zeros(3,1),"#8F0038","Contact force on elbow");
         %arr_wrist = plotContact(arm.pos_wrist, 0, zeros(3,1),"#B10026","Contact force on wrist");
         
@@ -251,7 +262,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         
-        subplot(4,2,2);
+        subplot(4,2,3);
         hold on;
         velplot2 = plot(0,0,"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 2 angular velocity');
         velplot2ref = plot(ss, trajectory(9,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 2 reference angular velocity");
@@ -263,18 +274,18 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         %set(gca, 'XColor', 'k', 'YColor', 'k'); 
         
-        subplot(4,2,3);
+        subplot(4,2,5);
         hold on;
         velplot3 = plot(0,0,"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 3 angular velocity');
         velplot3ref = plot(ss, trajectory(10,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 3 reference angular velocity");
         xlabel("Time [sec]", 'FontSize', fs);
-        ylabel("DOF 2 angular velocity [rad/s]", 'FontSize', fs, 'Color',[0 0 0]);
+        ylabel("DOF 3 angular velocity [rad/s]", 'FontSize', fs, 'Color',[0 0 0]);
         % xlim([0, t]); 
         grid on;
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         
-        subplot(4,2,4);
+        subplot(4,2,7);
         hold on;
         velplot4 = plot(0,0,"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 4 angular velocity');
         velplot4ref = plot(ss, trajectory(11,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 4 reference angular velocity");
@@ -285,7 +296,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off');         
 
-        subplot(4,2,5);
+        subplot(4,2,2);
         hold on;
         velplot5 = plot(0,0,"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 5 angular velocity');
         velplot5ref = plot(ss, trajectory(12,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 5 reference angular velocity");
@@ -296,7 +307,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         
-        subplot(4,2,6);
+        subplot(4,2,4);
         hold on;
         velplot6 = plot(0,0,"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 6 angular velocity');
         velplot6ref = plot(ss, trajectory(13,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 6 reference angular velocity");
@@ -307,7 +318,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off');         
  
-        subplot(4,2,7);
+        subplot(4,2,6);
         hold on;
         velplot7 = plot(0,0,"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 7 angular velocity');
         velplot7ref = plot(ss, trajectory(14,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 7 reference angular velocity");
@@ -337,7 +348,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         grid on;
         hold off;
 
-        subplot(4,2,2);
+        subplot(4,2,3);
         hold on;
         hold on;
         xlabel("Time [sec]", 'FontSize', fs);
@@ -353,7 +364,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         grid on;
         hold off;
 
-        subplot(4,2,3);
+        subplot(4,2,5);
         hold on;
         xlabel("Time [sec]", 'FontSize', fs);
         ylabel("Torque [Nm]", 'FontSize', fs);
@@ -368,7 +379,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         grid on;
         hold off;
 
-        subplot(4,2,4);
+        subplot(4,2,7);
         hold on;
         xlabel("Time [sec]", 'FontSize', fs);
         ylabel("Torque [Nm]", 'FontSize', fs);
@@ -383,7 +394,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         grid on;
         hold off;
 
-        subplot(4,2,5);
+        subplot(4,2,2);
         hold on;
         hold on;
         xlabel("Time [sec]", 'FontSize', fs);
@@ -399,7 +410,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         grid on;
         hold off;
 
-        subplot(4,2,6);
+        subplot(4,2,4);
         hold on;
         xlabel("Time [sec]", 'FontSize', fs);
         ylabel("Torque [Nm]", 'FontSize', fs);
@@ -414,7 +425,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         grid on;
         hold off;
 
-        subplot(4,2,7);
+        subplot(4,2,6);
         hold on;
         xlabel("Time [sec]", 'FontSize', fs);
         ylabel("Torque [Nm]", 'FontSize', fs);
@@ -430,8 +441,8 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         %set(lgd, 'Position', [0.73 0.98 0 0]);
         
-        fig_simu6 = figure();
-        figure(fig_simu6);
+        fig_simu3 = figure();
+        figure(fig_simu3);
         legend('FontSize', fs, 'Location', 'northoutside', 'NumColumns',3 , 'AutoUpdate', 'off'); 
         hold off;
         
@@ -446,7 +457,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         
-        subplot(4,2,2);
+        subplot(4,2,3);
         hold on;
         xplot2 = plot(0,trajectory(2,1),"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 2 angular position');
         xplot2ref = plot(ss, trajectory(2,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 2 reference angular position");
@@ -458,18 +469,18 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         %set(gca, 'XColor', 'k', 'YColor', 'k'); 
         
-        subplot(4,2,3);
+        subplot(4,2,5);
         hold on;
         xplot3 = plot(0,trajectory(3,1),"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 3 angular position');
         xplot3ref = plot(ss, trajectory(3,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 3 reference angular position");
         xlabel("Time [sec]", 'FontSize', fs);
-        ylabel("DOF 2 angular position [rad]", 'FontSize', fs, 'Color',[0 0 0]);
+        ylabel("DOF 3 angular position [rad]", 'FontSize', fs, 'Color',[0 0 0]);
         % xlim([0, t]); 
         grid on;
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         
-        subplot(4,2,4);
+        subplot(4,2,7);
         hold on;
         xplot4 = plot(0,trajectory(4,1),"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 4 angular position');
         xplot4ref = plot(ss, trajectory(4,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 4 reference angular position");
@@ -480,7 +491,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off');         
 
-        subplot(4,2,5);
+        subplot(4,2,2);
         hold on;
         xplot5 = plot(0,trajectory(5,1),"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 5 angular position');
         xplot5ref = plot(ss, trajectory(5,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 5 reference angular position");
@@ -491,7 +502,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off'); 
         
-        subplot(4,2,6);
+        subplot(4,2,4);
         hold on;
         xplot6 = plot(0,trajectory(6,1),"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 6 angular position');
         xplot6ref = plot(ss, trajectory(6,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 6 reference angular position");
@@ -502,7 +513,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         hold off;
         legend('FontSize', fs, 'Orientation', 'horizontal', 'Location', 'northoutside', 'AutoUpdate', 'off');         
  
-        subplot(4,2,7);
+        subplot(4,2,6);
         hold on;
         xplot7 = plot(0,trajectory(7,1),"-", "color","#FF1F5B", "LineWidth",2, "DisplayName",'DOF 7 angular position');
         xplot7ref = plot(ss, trajectory(7,:), "-", 'color', "#AF58BA", "LineWidth",2, "DisplayName","DOF 7 reference angular position");
@@ -610,7 +621,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         if state(1:7)== q_d
             q_d= [Thetauapp(:,prevIdxua+1);Thetalapp(:,prevIdxla+1);Thetawpp(:,prevIdxw+1)];
         end
-        hu= human_effort(state(1:7), state(8:14), q_d, 'active', tau_hu, K_healthy, B_healthy, q_rest_healthy, K_spastic, B_spastic, q_rest_stroke, K_intent,impairment);
+        hu= human_effort(state(1:7), state(8:14), q_d, 'passive', tau_hu, K_healthy, B_healthy, q_rest_healthy, K_spastic, B_spastic, q_rest_stroke, K_intent,impairment);
         Control_Effort = [Control_Effort, u];
         J_Vel= [J_Vel , state(8:14)];
         J_Pos= [J_Pos , state(1:7)];
@@ -654,6 +665,8 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
                 set(endpoint_elbow,"XData", Endpoint_elbow(:,1),"YData",Endpoint_elbow(:,2),"ZData",Endpoint_elbow(:,3));
                 set(endpoint_wrist,"XData", Endpoint_wrist(:,1),"YData",Endpoint_wrist(:,2),"ZData",Endpoint_wrist(:,3));
                 set(endpoint_tip,"XData", Endpoint_tip(:,1),"YData",Endpoint_tip(:,2),"ZData",Endpoint_tip(:,3));
+                frame = getframe(fig_simu);
+                writeVideo(videop, frame);
                 %if norm(f_elbow) > 1e-10
                 %    nor_f_elbow = 0.1*f_elbow/norm(f_elbow);
                 %else
@@ -697,7 +710,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
                 set(uplot61,"XData", Time,"YData",Control_Effort(6,:));
                 set(uplot71,"XData", Time,"YData",Control_Effort(7,:));
 
-                figure(fig_simu6);
+                figure(fig_simu3);
                 set(title_time, 'String', ['Time: ', num2str(t_now), ' sec'])
                 set(xplot1,"XData", Time,"YData",J_Pos(1,:));
                 set(xplot2,"XData", Time,"YData",J_Pos(2,:));
@@ -1053,8 +1066,8 @@ function tau_human = human_effort(q, qd, q_d, mode, tau_hu, K_healthy, B_healthy
 
     tau_human = tau_hu;
     tau_healthy_intent = K_intent * (q_d - q);
-    tau_pathology = -K_spastic .* (q - q_rest_stroke) - B_spastic .* qd;
-    tau_healthy_passive = -K_healthy .* (q - q_rest_healthy) - B_healthy .* qd;
+    tau_pathology = -K_spastic * (q - q_rest_stroke) - B_spastic .* qd;
+    tau_healthy_passive = (-K_healthy * (q - q_rest_healthy) - B_healthy * qd)/5000;
     switch mode
                  case 'passive'
             % Model 1: Human is a passive relaxed spring-damper system

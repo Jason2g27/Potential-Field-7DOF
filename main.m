@@ -167,7 +167,7 @@ q_recorded = trajectory (1:7,:);
 %v_smooth = gradient(q_smooth) / dt;
 %a_smooth = gradient(v_smooth) / dt;
 [q_smooth, v_smooth, a_smooth] = quintic_spline_trajectory(q_recorded, dt);
-trajectory2 = [q_smooth; v_smooth; a_smooth];
+trajectory2 = trajectory;
 
 %{
 figure;
@@ -395,7 +395,7 @@ function [trajectory, ss] = getTrajectoryProperty(model, start_pos, end_pos, ts,
         
         Pos_elbow100 = Pos_elbow(:, end);
         Pos_wrist100 = Pos_wrist(:, end);
-        Pos_tip100 = Pos_tip(:, round(0.25*t_tot/ts/n));
+        Pos_tip100 = Pos_tip(:, end));
         config100 = [[0;0;0] Pos_elbow100 Pos_wrist100 Pos_tip100];
         
         
