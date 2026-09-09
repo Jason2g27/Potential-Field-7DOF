@@ -131,8 +131,8 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
      for mmm=1:mmmL
          for jjj=1:jjjL
              for iii=1:iiiL 
-                wlap2 (iii,mmm,jjj)= exp(-(1/(sigma^2))*([Theta21(mmm);Theta21(jjj)]-Thetalapp(:,iii))'*([Theta21(mmm);Theta21(jjj)]-Thetalapp(:,iii)));
-                wwp2 (iii,mmm,jjj)= exp(-(1/(sigma^2))*([Theta21(mmm);Theta21(jjj)]-Thetawpp(:,iii))'*([Theta21(mmm);Theta21(jjj)]-Thetawpp(:,iii))); 
+                wlap2 (iii,mmm,jjj)= exp(-(1/(sigma_el^2))*([Theta21(mmm);Theta21(jjj)]-Thetalapp(:,iii))'*([Theta21(mmm);Theta21(jjj)]-Thetalapp(:,iii)));
+                wwp2 (iii,mmm,jjj)= exp(-(1/(sigma_wr^2))*([Theta21(mmm);Theta21(jjj)]-Thetawpp(:,iii))'*([Theta21(mmm);Theta21(jjj)]-Thetawpp(:,iii))); 
                 ulap2(iii,mmm,jjj)= ualla(iii)+0.5*([Theta21(mmm);Theta21(jjj)]-Thetalapp(:,iii))'*Kla(:,2*iii-1:2*iii)*([Theta21(mmm);Theta21(jjj)]-Thetalapp(:,iii));
                 uwp2(iii,mmm,jjj)= ualw(iii)+0.5*([Theta21(mmm);Theta21(jjj)]-Thetawpp(:,iii))'*Kw(:,2*iii-1:2*iii)*([Theta21(mmm);Theta21(jjj)]-Thetawpp(:,iii));
              end
@@ -163,7 +163,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
      ylabel('\theta_{5}');
      zlabel('\U_{wrist}');
      % Plotting the Potential field end;
-
+%
     %diffsua = Thetauapp - Thetauap;
     %sqDistancesua = sum(diffsua.^2, 2);
     %[~, closestIdxua] = min(sqDistancesua);
@@ -591,7 +591,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         Thetawpdt = state (13:14);
         %Thetapdt= state(8:14);
         
-        [hist,UUP,diff221,diff222,diff223,disua,disla,disw,u,Sua,Sla,Sw,prevIdxua,prevIdxla,prevIdxw,wuap,uuap,wlap,ulap,wwp,uwp,Ni_prevua,Ti_prevua,Pi_prevua,thetadrua,thetadrla,thetadrw] =                      Potentialfield(sigma_sh,sigma_el,sigma_wr,winsize_sh,winsize_el,winsize_wr,bbuf, abuf,hist,J_max,UUP,DesiredTorque2,t_now,ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN,thetadrua,thetadrla,thetadrw,sim,model,Pi_prevua,Ti_prevua,Ni_prevua,wuap,uuap,wlap,ulap,wwp,uwp,calua,calla,calw,ualua,ualla,ualw,M,C,G,Sua,Sla,Sw,mkkk,Thetauap,Thetalap,Thetawp,Thetauapdt,Thetalapdt,Thetawpdt,Thetauapp,Thetalapp,Thetawpp,Thetauappdt,Thetalappdt,Thetawppdt,Kua,Kla,Kw,prevIdxua,prevIdxla,prevIdxw); 
+        [hist,UUP,diff221,diff222,diff223,disua,disla,disw,u,Sua,Sla,Sw,prevIdxua,prevIdxla,prevIdxw,wuap,uuap,wlap,ulap,wwp,uwp,Ni_prevua,Ti_prevua,Pi_prevua,thetadrua,thetadrla,thetadrw] = Potentialfield(sigma_sh,sigma_el,sigma_wr,winsize_sh,winsize_el,winsize_wr,bbuf, abuf,hist,J_max,UUP,DesiredTorque2,t_now,ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN,thetadrua,thetadrla,thetadrw,sim,model,Pi_prevua,Ti_prevua,Ni_prevua,wuap,uuap,wlap,ulap,wwp,uwp,calua,calla,calw,ualua,ualla,ualw,M,C,G,Sua,Sla,Sw,mkkk,Thetauap,Thetalap,Thetawp,Thetauapdt,Thetalapdt,Thetawpdt,Thetauapp,Thetalapp,Thetawpp,Thetauappdt,Thetalappdt,Thetawppdt,Kua,Kla,Kw,prevIdxua,prevIdxla,prevIdxw); 
 
         % brc=1;
 %if controller_type =="pid"
