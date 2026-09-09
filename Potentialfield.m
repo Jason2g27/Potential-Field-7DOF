@@ -1,23 +1,23 @@
-function [hist2,UUP2,diff221,diff222,diff223,disua,disla,disw,UUU,Sua2,Sla2,Sw2,prevIdxua2,prevIdxla2,prevIdxw2,wuap2,uuap2,wlap2,ulap2,wwp2,uwp2,Ni_prevua2,Ti_prevua2,Pi_prevua2,thetadrua2,thetadrla2,thetadrw2] = Potentialfield(bbuf, abuf,hist,J_max,UUP,DesiredTorque2,t_now,ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN,thetadrua,thetadrla,thetadrw,sim,model,winsize,Pi_prevua,Ti_prevua,Ni_prevua,wuap,uuap,wlap,ulap,wwp,uwp,calua,calla,calw,ualua,ualla,ualw,M,C,G,Sua,Sla,Sw,sigma,mkkk,Thetauap,Thetalap,Thetawp,Thetauapdt,Thetalapdt,Thetawpdt,Thetauapp,Thetalapp,Thetawpp,Thetauappdt,Thetalappdt,Thetawppdt,Kua,Kla,Kw,prevIdxua,prevIdxla,prevIdxw) 
-        [diff221,xxxua,disua, prevIdxua2,startIdxua,endIdxua] = getClosestInPathWindow(Thetauapp, Thetauap, prevIdxua, winsize);
-        [diff222,xxxla,disla, prevIdxla2,startIdxla,endIdxla] = getClosestInPathWindow(Thetalapp, Thetalap, prevIdxla, winsize);
-        [diff223,xxxw,disw, prevIdxw2,startIdxw,endIdxw] = getClosestInPathWindow(Thetawpp, Thetawp, prevIdxw, winsize);  
+function [hist2,UUP2,diff221,diff222,diff223,disua,disla,disw,UUU,Sua2,Sla2,Sw2,prevIdxua2,prevIdxla2,prevIdxw2,wuap2,uuap2,wlap2,ulap2,wwp2,uwp2,Ni_prevua2,Ti_prevua2,Pi_prevua2,thetadrua2,thetadrla2,thetadrw2] = Potentialfield(sigma_sh,sigma_el,sigma_wr,winsize_sh,winsize_el,winsize_wr,bbuf, abuf,hist,J_max,UUP,DesiredTorque2,t_now,ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN,thetadrua,thetadrla,thetadrw,sim,model,Pi_prevua,Ti_prevua,Ni_prevua,wuap,uuap,wlap,ulap,wwp,uwp,calua,calla,calw,ualua,ualla,ualw,M,C,G,Sua,Sla,Sw,mkkk,Thetauap,Thetalap,Thetawp,Thetauapdt,Thetalapdt,Thetawpdt,Thetauapp,Thetalapp,Thetawpp,Thetauappdt,Thetalappdt,Thetawppdt,Kua,Kla,Kw,prevIdxua,prevIdxla,prevIdxw) 
+        [diff221,xxxua,disua, prevIdxua2,startIdxua,endIdxua] = getClosestInPathWindow(Thetauapp, Thetauap, prevIdxua, winsize_sh);
+        [diff222,xxxla,disla, prevIdxla2,startIdxla,endIdxla] = getClosestInPathWindow(Thetalapp, Thetalap, prevIdxla, winsize_el);
+        [diff223,xxxw,disw, prevIdxw2,startIdxw,endIdxw] = getClosestInPathWindow(Thetawpp, Thetawp, prevIdxw, winsize_wr);  
         %disua=getClosestInPath(Thetauapp, Thetauap);
         %disla=getClosestInPath(Thetalapp, Thetalap);
         %disw= getClosestInPath(Thetawpp, Thetawp);
         
         for iii=startIdxua:endIdxua
-            wuap (iii-startIdxua+1)= exp(-(1/(sigma^2))*(Thetauap-Thetauapp(:,iii))'*(Thetauap-Thetauapp(:,iii)));
+            wuap (iii-startIdxua+1)= exp(-(1/(sigma_sh^2))*(Thetauap-Thetauapp(:,iii))'*(Thetauap-Thetauapp(:,iii)));
             uuap(iii-startIdxua+1)= ualua(iii)+0.5*(Thetauap-Thetauapp(:,iii))'*Kua(:,3*iii-2:3*iii)*(Thetauap-Thetauapp(:,iii));            
             %diffth = Thetauap-Thetauapp(:,iii)
         end
         for iii=startIdxla:endIdxla
-            wlap (iii-startIdxla+1)= exp(-(1/(sigma^2))*(Thetalap-Thetalapp(:,iii))'*(Thetalap-Thetalapp(:,iii)));
+            wlap (iii-startIdxla+1)= exp(-(1/(sigma_el^2))*(Thetalap-Thetalapp(:,iii))'*(Thetalap-Thetalapp(:,iii)));
             ulap(iii-startIdxla+1)= ualla(iii)+0.5*(Thetalap-Thetalapp(:,iii))'*Kla(:,2*iii-1:2*iii)*(Thetalap-Thetalapp(:,iii));
             %diffth = Thetalap-Thetalapp(:,iii)
         end
         for iii=startIdxw:endIdxw
-            wwp (iii-startIdxw+1)= exp(-(1/(sigma^2))*(Thetawp-Thetawpp(:,iii))'*(Thetawp-Thetawpp(:,iii)));  
+            wwp (iii-startIdxw+1)= exp(-(1/(sigma_wr^2))*(Thetawp-Thetawpp(:,iii))'*(Thetawp-Thetawpp(:,iii)));  
             uwp(iii-startIdxw+1)= ualw(iii)+0.5*(Thetawp-Thetawpp(:,iii))'*Kw(:,2*iii-1:2*iii)*(Thetawp-Thetawpp(:,iii));           
         end
         
@@ -84,21 +84,21 @@ function [hist2,UUP2,diff221,diff222,diff223,disua,disla,disw,UUU,Sua2,Sla2,Sw2,
         end
          %}
         for iii=startIdxua:endIdxua
-            uuak = uuak-((1/sigma^2)*wuap(iii-startIdxua+1)*uuap(iii-startIdxua+1)*(Thetauapp(:,iii)-wjxpua)+wuap(iii-startIdxua+1)*Kua(:,3*iii-2:3*iii)*(Thetauap-Thetauapp(:,iii)));
+            uuak = uuak-((1/sigma_sh^2)*wuap(iii-startIdxua+1)*uuap(iii-startIdxua+1)*(Thetauapp(:,iii)-wjxpua)+wuap(iii-startIdxua+1)*Kua(:,3*iii-2:3*iii)*(Thetauap-Thetauapp(:,iii)));
             assert(~any(isnan(uuak), 'all'), 'NaN detected in variable uuak!');
             %if any(isnan(uuak(:)))
            %     keyboard; % This forces MATLAB to pause right here
            % end
         end
         for iii=startIdxla:endIdxla
-            ulak = ulak-((1/sigma^2)*wlap(iii-startIdxla+1)*ulap(iii-startIdxla+1)*(Thetalapp(:,iii)-wjxpla)+wlap(iii-startIdxla+1)*Kla(:,2*iii-1:2*iii)*(Thetalap-Thetalapp(:,iii)));
+            ulak = ulak-((1/sigma_el^2)*wlap(iii-startIdxla+1)*ulap(iii-startIdxla+1)*(Thetalapp(:,iii)-wjxpla)+wlap(iii-startIdxla+1)*Kla(:,2*iii-1:2*iii)*(Thetalap-Thetalapp(:,iii)));
             assert(~any(isnan(ulak), 'all'), 'NaN detected in variable ulak!');
             %if any(isnan(ulak(:)))
            %     keyboard; % This forces MATLAB to pause right here
             %end            
         end
         for iii=startIdxw:endIdxw
-            uwk = uwk-((1/sigma^2)*wwp(iii-startIdxw+1)*uwp(iii-startIdxw+1)*(Thetawpp(:,iii)-wjxpw)+wwp(iii-startIdxw+1)*Kw(:,2*iii-1:2*iii)*(Thetawp-Thetawpp(:,iii)));
+            uwk = uwk-((1/sigma_wr^2)*wwp(iii-startIdxw+1)*uwp(iii-startIdxw+1)*(Thetawpp(:,iii)-wjxpw)+wwp(iii-startIdxw+1)*Kw(:,2*iii-1:2*iii)*(Thetawp-Thetawpp(:,iii)));
             assert(~any(isnan(uwk), 'all'), 'NaN detected in variable uwk!');
             %if any(isnan(uwk(:)))
             %    keyboard; % This forces MATLAB to pause right here
@@ -132,7 +132,7 @@ function [hist2,UUP2,diff221,diff222,diff223,disua,disla,disw,UUU,Sua2,Sla2,Sw2,
        
         uacp = Thetauappdt(:,startIdxua:endIdxua)*wuap;
         lacp = Thetalappdt(:,startIdxla:endIdxla)*wlap;
-        wcp = Thetawppdt(:,startIdxla:endIdxla)*wwp;
+        wcp = Thetawppdt(:,startIdxw:endIdxw)*wwp;
 
         ua3=0.5*(1-tanh(3*(2*disua/model.lvua-1)));
         la3=0.5*(1-tanh(3*(2*disla/model.lvla-1)));

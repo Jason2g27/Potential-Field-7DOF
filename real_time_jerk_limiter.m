@@ -6,11 +6,15 @@ function a_f = real_time_jerk_limiter(a_target_raw, a_prev, dt, J_max)
     %   J_max: The absolute maximum allowable jerk (rad/s^3)
 
     % 1. Compute the raw jerk required to hit your controller's target
-    j_requested = (a_target_raw - a_prev) / dt;
+    j_requested = (a_target_raw- a_prev) / dt;
+    j_clamped=[1;1;1;1;1;1;1];
+    for i=1:7
+        
     
     % 2. Hard-clamp the jerk 
     % This is the exact mathematical operation that shears off the spikes
-    j_clamped = max(-J_max, min(J_max, j_requested));
+        j_clamped(i) = max(-J_max(i), min(J_max(i), j_requested(i)));
+    end
     
     % 3. Step the acceleration forward safely
     a_f = a_prev + j_clamped * dt;

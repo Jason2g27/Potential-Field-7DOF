@@ -39,9 +39,14 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
     c = model.c;
     Kd = model.Kd;
     Kp = model.Kp;
-    J_max = 0.5 ;
+    J_max = [0.5;0.5;0.5;0.5;0.5;0.5;0.5];
     UUP = 0;
-    sigma= 2; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    sigma_sh= 2;
+    sigma_el= 2;
+    sigma_wr=2;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    winsize_sh = 15;
+    winsize_el = 15;
+    winsize_wr = 15;
     % ind_t = [1, 2:plot_freq:length(ss)-1, length(ss)];
     % ss = ss(ind_t);
     % trajectory = trajectory(:,ind_t);
@@ -62,13 +67,13 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
     impairment.shoulder = 0;
     impairment.elbow = 0;
     impairment.wrist = 0;
-    [DesiredTorque,DesiredTorque2, Kua, Kla, Kw, ualua, ualla, ualw, calua, calla, calw, BBBB, ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN] = Potentialfieldinitator(trajectory,trajectory2, model,sigma,[],[]);
+    [DesiredTorque,DesiredTorque2, Kua, Kla, Kw, ualua, ualla, ualw, calua, calla, calw, BBBB, ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN] = Potentialfieldinitator(trajectory,trajectory2, model,sigma_sh,sigma_el,sigma_wr,[],[]);
    
     
     %Kua =Kua 
     
     mkkk=length(trajectory(1,:));
-    winsize = 15;
+    
     %{ 
     wuap = zeros(mkkk,1);
     wlap = zeros(mkkk,1);
@@ -77,12 +82,12 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
     ulap = zeros(mkkk);
     uwp = zeros(mkkk);
     %}
-    wuap = zeros(winsize+1);
-    wlap = zeros(winsize+1);
-    wwp = zeros(winsize+1);
-    uuap = zeros(winsize+1);
-    ulap = zeros(winsize+1);
-    uwp = zeros(winsize+1);   
+    wuap = zeros(winsize_sh+1);
+    wlap = zeros(winsize_el+1);
+    wwp = zeros(winsize_wr+1);
+    uuap = zeros(winsize_sh+1);
+    ulap = zeros(winsize_el+1);
+    uwp = zeros(winsize_wr+1);   
     %uuak = zeros(3,1);
     %ulak = zeros(2,1);
     %uwk = zeros(2,1);
@@ -122,7 +127,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
      UUla2 = zeros (mmmL,mmmL);
      UUw2= zeros (mmmL,mmmL);
 
-
+%
      for mmm=1:mmmL
          for jjj=1:jjjL
              for iii=1:iiiL 
@@ -586,8 +591,9 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         Thetawpdt = state (13:14);
         %Thetapdt= state(8:14);
         
-        [hist,UUP,diff221,diff222,diff223,disua,disla,disw,u,Sua,Sla,Sw,prevIdxua,prevIdxla,prevIdxw,wuap,uuap,wlap,ulap,wwp,uwp,Ni_prevua,Ti_prevua,Pi_prevua,thetadrua,thetadrla,thetadrw] = Potentialfield(bbuf, abuf,hist,J_max,UUP,DesiredTorque2,t_now,ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN,thetadrua,thetadrla,thetadrw,sim,model,winsize,Pi_prevua,Ti_prevua,Ni_prevua,wuap,uuap,wlap,ulap,wwp,uwp,calua,calla,calw,ualua,ualla,ualw,M,C,G,Sua,Sla,Sw,sigma,mkkk,Thetauap,Thetalap,Thetawp,Thetauapdt,Thetalapdt,Thetawpdt,Thetauapp,Thetalapp,Thetawpp,Thetauappdt,Thetalappdt,Thetawppdt,Kua,Kla,Kw,prevIdxua,prevIdxla,prevIdxw); 
-       % brc=1;
+        [hist,UUP,diff221,diff222,diff223,disua,disla,disw,u,Sua,Sla,Sw,prevIdxua,prevIdxla,prevIdxw,wuap,uuap,wlap,ulap,wwp,uwp,Ni_prevua,Ti_prevua,Pi_prevua,thetadrua,thetadrla,thetadrw] =                      Potentialfield(sigma_sh,sigma_el,sigma_wr,winsize_sh,winsize_el,winsize_wr,bbuf, abuf,hist,J_max,UUP,DesiredTorque2,t_now,ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN,thetadrua,thetadrla,thetadrw,sim,model,Pi_prevua,Ti_prevua,Ni_prevua,wuap,uuap,wlap,ulap,wwp,uwp,calua,calla,calw,ualua,ualla,ualw,M,C,G,Sua,Sla,Sw,mkkk,Thetauap,Thetalap,Thetawp,Thetauapdt,Thetalapdt,Thetawpdt,Thetauapp,Thetalapp,Thetawpp,Thetauappdt,Thetalappdt,Thetawppdt,Kua,Kla,Kw,prevIdxua,prevIdxla,prevIdxw); 
+
+        % brc=1;
 %if controller_type =="pid"
             % PID
          %   [u, ek_1_new, ek_2_new, eint_new] = pidff(model,err_pos,err_posk_1,err_posk_2,eint,ts,G);
@@ -621,7 +627,7 @@ function [Torque_Wrist, U] = exoSimulator(ss, t_traj, sim, trajectory, trajector
         if state(1:7)== q_d
             q_d= [Thetauapp(:,prevIdxua+1);Thetalapp(:,prevIdxla+1);Thetawpp(:,prevIdxw+1)];
         end
-        hu= human_effort(state(1:7), state(8:14), q_d, 'passive', tau_hu, K_healthy, B_healthy, q_rest_healthy, K_spastic, B_spastic, q_rest_stroke, K_intent,impairment);
+        hu= human_effort(state(1:7), state(8:14), q_d, 'active', tau_hu, K_healthy, B_healthy, q_rest_healthy, K_spastic, B_spastic, q_rest_stroke, K_intent,impairment);
         Control_Effort = [Control_Effort, u];
         J_Vel= [J_Vel , state(8:14)];
         J_Pos= [J_Pos , state(1:7)];

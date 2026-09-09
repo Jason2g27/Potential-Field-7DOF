@@ -395,7 +395,7 @@ function [trajectory, ss] = getTrajectoryProperty(model, start_pos, end_pos, ts,
         
         Pos_elbow100 = Pos_elbow(:, end);
         Pos_wrist100 = Pos_wrist(:, end);
-        Pos_tip100 = Pos_tip(:, end));
+        Pos_tip100 = Pos_tip(:, end);
         config100 = [[0;0;0] Pos_elbow100 Pos_wrist100 Pos_tip100];
         
         

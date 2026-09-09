@@ -1,12 +1,13 @@
-function [DesiredTorque3, DesiredTorque4, Kua, Kla, Kw, ualua, ualla, ualw, calua, calla, calw, BBBB, ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN] = Potentialfieldinitator(trajectory, trajectory2, model, sigma,DesiredTorque,DesiredTorque2)   
+function [DesiredTorque3, DesiredTorque4, Kua, Kla, Kw, ualua, ualla, ualw, calua, calla, calw, BBBB, ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN] = Potentialfieldinitator(trajectory, trajectory2, model, sigma_sh,sigma_el,sigma_wr,DesiredTorque,DesiredTorque2)   
     
     for jj = 1:length(trajectory(1,:))
         M = getM(model, trajectory(:,jj));
         C = getC(model, trajectory(:,jj));
         G = getG(model, trajectory(:,jj));
         DesiredTorque = [DesiredTorque inverseDynamics(trajectory(:,jj), M, C, G)];
-        DesiredTorque2 = [DesiredTorque2 inverseDynamics2(trajectory2(:,jj), M, C, G)];
+        DesiredTorque2 = [DesiredTorque2 inverseDynamics2(trajectory2(:,jj), M, C, G)]; 
     end
+ 
     DesiredTorque3 = DesiredTorque;
     DesiredTorque4 = DesiredTorque2;
     %qtotal = [1 0 0 0];
@@ -218,9 +219,9 @@ function [DesiredTorque3, DesiredTorque4, Kua, Kla, Kw, ualua, ualla, ualw, calu
    
     for iii=1:mkkk
         for jjj=1:mkkk
-            wuap (jjj,iii)= exp(-(1/(sigma^2))*(Thetauap(:,jjj)-Thetauap(:,iii))'*(Thetauap(:,jjj)-Thetauap(:,iii)));
-            wlap (jjj,iii)= exp(-(1/(sigma^2))*(Thetalap(:,jjj)-Thetalap(:,iii))'*(Thetalap(:,jjj)-Thetalap(:,iii)));
-            wwp (jjj,iii)= exp(-(1/(sigma^2))*(Thetawp(:,jjj)-Thetawp(:,iii))'*(Thetawp(:,jjj)-Thetawp(:,iii)));
+            wuap (jjj,iii)= exp(-(1/(sigma_sh^2))*(Thetauap(:,jjj)-Thetauap(:,iii))'*(Thetauap(:,jjj)-Thetauap(:,iii)));
+            wlap (jjj,iii)= exp(-(1/(sigma_el^2))*(Thetalap(:,jjj)-Thetalap(:,iii))'*(Thetalap(:,jjj)-Thetalap(:,iii)));
+            wwp (jjj,iii)= exp(-(1/(sigma_wr^2))*(Thetawp(:,jjj)-Thetawp(:,iii))'*(Thetawp(:,jjj)-Thetawp(:,iii)));
         end
     end
     for jjj=1:mkkk
@@ -248,12 +249,12 @@ function [DesiredTorque3, DesiredTorque4, Kua, Kla, Kw, ualua, ualla, ualw, calu
     cuw= zeros (2*fgp,fgp);
     for ijj=1:fgp
         for ijk=1:fgp
-            cuua(3*ijk-2:3*ijk,ijj)=(wuap(ijk,ijj)/sigma^2)* (Thetauap(:,ijj)-wuap2(:,ijk));
-            cula(2*ijk-1:2*ijk,ijj)=(wlap(ijk,ijj)/sigma^2)* (Thetalap(:,ijj)-wlap2(:,ijk));
-            cuw(2*ijk-1:2*ijk,ijj)=(wwp(ijk,ijj)/sigma^2)* (Thetawp(:,ijj)-wwp2(:,ijk));
-            duua(3*ijk-2:3*ijk,1)=duua(3*ijk-2:3*ijk,1)-((wuap(ijk,ijj)/sigma^2)*(0.5*(Thetauap(:,ijk)-Thetauap(:,ijj))'*Kua(:,3*ijj-2:3*ijj)*(Thetauap(:,ijk)-Thetauap(:,ijj))) *(Thetauap(:,ijj)-wuap2(:,ijk))+wuap(ijk,ijj)*Kua(:,3*ijj-2:3*ijj)*(Thetauap(:,ijk)-Thetauap(:,ijj))+Torqueuat(ijk)*ThetauapdT(:,ijk));
-            dula(2*ijk-1:2*ijk,1)=dula(2*ijk-1:2*ijk,1)-((wlap(ijk,ijj)/sigma^2)*(0.5*(Thetalap(:,ijk)-Thetalap(:,ijj))'*Kla(:,2*ijj-1:2*ijj)*(Thetalap(:,ijk)-Thetalap(:,ijj))) *(Thetalap(:,ijj)-wlap2(:,ijk))+wlap(ijk,ijj)*Kla(:,2*ijj-1:2*ijj)*(Thetalap(:,ijk)-Thetalap(:,ijj))+Torquelat(ijk)*ThetalapdT(:,ijk));
-            duw(2*ijk-1:2*ijk,1)=duw(2*ijk-1:2*ijk,1)-((wwp(ijk,ijj)/sigma^2)*(0.5*(Thetawp(:,ijk)-Thetawp(:,ijj))'*Kw(:,2*ijj-1:2*ijj)*(Thetawp(:,ijk)-Thetawp(:,ijj))) *(Thetawp(:,ijj)-wwp2(:,ijk))+wwp(ijk,ijj)*Kw(:,2*ijj-1:2*ijj)*(Thetawp(:,ijk)-Thetawp(:,ijj))+Torquewt(ijk)*ThetawpdT(:,ijk));
+            cuua(3*ijk-2:3*ijk,ijj)=(wuap(ijk,ijj)/sigma_sh^2)* (Thetauap(:,ijj)-wuap2(:,ijk));
+            cula(2*ijk-1:2*ijk,ijj)=(wlap(ijk,ijj)/sigma_el^2)* (Thetalap(:,ijj)-wlap2(:,ijk));
+            cuw(2*ijk-1:2*ijk,ijj)=(wwp(ijk,ijj)/sigma_wr^2)* (Thetawp(:,ijj)-wwp2(:,ijk));
+            duua(3*ijk-2:3*ijk,1)=duua(3*ijk-2:3*ijk,1)-((wuap(ijk,ijj)/sigma_sh^2)*(0.5*(Thetauap(:,ijk)-Thetauap(:,ijj))'*Kua(:,3*ijj-2:3*ijj)*(Thetauap(:,ijk)-Thetauap(:,ijj))) *(Thetauap(:,ijj)-wuap2(:,ijk))+wuap(ijk,ijj)*Kua(:,3*ijj-2:3*ijj)*(Thetauap(:,ijk)-Thetauap(:,ijj))+Torqueuat(ijk)*ThetauapdT(:,ijk));
+            dula(2*ijk-1:2*ijk,1)=dula(2*ijk-1:2*ijk,1)-((wlap(ijk,ijj)/sigma_el^2)*(0.5*(Thetalap(:,ijk)-Thetalap(:,ijj))'*Kla(:,2*ijj-1:2*ijj)*(Thetalap(:,ijk)-Thetalap(:,ijj))) *(Thetalap(:,ijj)-wlap2(:,ijk))+wlap(ijk,ijj)*Kla(:,2*ijj-1:2*ijj)*(Thetalap(:,ijk)-Thetalap(:,ijj))+Torquelat(ijk)*ThetalapdT(:,ijk));
+            duw(2*ijk-1:2*ijk,1)=duw(2*ijk-1:2*ijk,1)-((wwp(ijk,ijj)/sigma_wr^2)*(0.5*(Thetawp(:,ijk)-Thetawp(:,ijj))'*Kw(:,2*ijj-1:2*ijj)*(Thetawp(:,ijk)-Thetawp(:,ijj))) *(Thetawp(:,ijj)-wwp2(:,ijk))+wwp(ijk,ijj)*Kw(:,2*ijj-1:2*ijj)*(Thetawp(:,ijk)-Thetawp(:,ijj))+Torquewt(ijk)*ThetawpdT(:,ijk));
         end
     end
 
