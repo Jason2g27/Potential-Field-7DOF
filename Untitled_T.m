@@ -1,7 +1,7 @@
 clc;
 clear all;
 close all;
-syms t1 t2 t3 t4 t5 t6 t7 lf lu luc lw lfc lwc PI Lu Lf real
+syms t1 t2 t3 t4 t5 t6 t7 t8 lf lu luc lw lfc lwc PI Lu Lf Lw Lt real
 PI=sym(pi); 
 
         T01p = DHConvention(-PI/2, 0, 0, -PI/2 + t1); %
@@ -21,7 +21,7 @@ PI=sym(pi);
         T06p = T0_p2p * Tp2_6p;
         T67p = DHConvention(-PI/2, 0, 0, t7); 
         T07p = T06p * T67p;
-        T78p= DHConvention(0, lw, 0, 0); 
+        T78p= DHConvention(0, lw, 0, t8); 
         T08p=T07p*T78p;
 
 
@@ -104,6 +104,14 @@ Tp1pp=simplify(expand(T0_p1-T0_p1p))
 Tp2pp=simplify(expand(T0_p2-T0_p2p))  
 %}   
 X1= [Lu;0;0;1];
-Y1= simplify(T0_p1*X1)
 X2= [Lf;0;0;1];
+X3= [Lw;0;0;1];
+X4= [Lt;0;0;1];
+Y1= simplify(T0_p1*X1)
+
 Y2= simplify(T0_p2*X2)
+
+T4 = simplify (inv(T04p))
+
+Y3= simplify(T45p*T5_p2p*Tp2_6p*T67p*X3)
+Y4= simplify(T45p*T5_p2p*Tp2_6p*T67p*T78p*X4)
