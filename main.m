@@ -111,6 +111,7 @@ model.Ic66 = zeros(3);
 model.Ic33 = [Ixx_3 0 0;0 Iyy_3 0;0 0 Izz_3];
 model.Ic55 = [Ixx_5 0 0;0 Iyy_5 0;0 0 Izz_5];
 model.Ic77 = [Ixx_7 0 0;0 Iyy_7 0;0 0 Izz_7];
+debug=1;
 %% Test
 end_pos = (pi/180)*[-140;36.4;122.4;46.8;-25.2;-7.2;-3.6]; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [trajectory, ss] = getTrajectoryProperty(model, start_pos, end_pos, ts_traj, t_tot, n, fontsize, legendfontsize, 1);
@@ -166,7 +167,7 @@ q_recorded = trajectory (1:7,:);
 % Proceed to Step 5
 %v_smooth = gradient(q_smooth) / dt;
 %a_smooth = gradient(v_smooth) / dt;
-[q_smooth, v_smooth, a_smooth] = quintic_spline_trajectory(q_recorded, dt);
+%[q_smooth, v_smooth, a_smooth] = quintic_spline_trajectory(q_recorded, dt);
 trajectory2 = trajectory;
 
 %{
