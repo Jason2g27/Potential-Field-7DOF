@@ -306,7 +306,12 @@ function [DesiredTorque3, DesiredTorque4, Kua, Kla, Kw, ualua, ualla, ualw, calu
     for ipp=2:fgp
         [ThetauapdottN1(:,ipp),ThetauapdottN2(:,ipp)]= nextBishopFrame(Thetauap(:,ipp-1),Thetauapdott2(:,ipp-1), Thetauapdott2(:,ipp),Thetauap(:,ipp), ThetauapdottN1(:,ipp-1));
     end
-    
+    cuvua= zeros (3*fgp,3);
+    cuvla= zeros (2*fgp,2);
+    cuvw= zeros (2*fgp,2);
+    duvua= zeros (3*fgp,1);
+    duvla= zeros (2*fgp,1);
+    duvw= zeros (2*fgp,1);
     for ijj=1:fgp
         cuvua(3*ijj-2:3*ijj,1)= -(Thetauapdott2(:,ijj)*Thetauapdott2(:,ijj)')*Thetauapdot(:,ijj)+Thetauapdott(:,ijj);
         cuvua(3*ijj-2:3*ijj,2)=-(ThetauapdottN1(:,ijj)*ThetauapdottN1(:,ijj)')*Thetauapdot(:,ijj);
