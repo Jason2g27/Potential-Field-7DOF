@@ -1,5 +1,4 @@
 function [DesiredTorque3, DesiredTorque4, Kua, Kla, Kw, ualua, ualla, ualw, calua, calla, calw, BBBB, ThetauapdN1, ThetauapdN2 ,ThetalapdN, ThetawpdN] = Potentialfieldinitator(trajectory, trajectory2, model, sigma_sh,sigma_el,sigma_wr,DesiredTorque,DesiredTorque2)   
-    
     for jj = 1:length(trajectory(1,:))
         M = getM(model, trajectory(:,jj));
         C = getC(model, trajectory(:,jj));

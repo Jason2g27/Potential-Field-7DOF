@@ -52,9 +52,9 @@ function [hist2,UUP2,diff221,diff222,diff223,disua,disla,disw,UUU,Sua2,Sla2,Sw2,
         ulap2 = ulap;
         wwp2 = wwp;
         uwp2 = uwp;
-        uuak=0;
-        ulak=0;
-        uwk=0;
+        uuak=zeros(3,1);
+        ulak=zeros(2,1);
+        uwk=zeros(2,1);
 %{
         for iii=1:mkkk
             wuapv (iii)= exp(-(1/(sigma^2))*(Thetauap-Thetauapp(:,iii))'*(Thetauap-Thetauapp(:,iii)));

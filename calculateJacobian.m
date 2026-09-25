@@ -1,4 +1,3 @@
-
 function Jv = calculateJacobian(T01,T02,T03,T04,T05,T06,T07,T08,i)
 
     z1 = T01(1:3,3);
