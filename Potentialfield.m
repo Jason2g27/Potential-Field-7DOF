@@ -40,11 +40,11 @@ function [hist2,UUP2,diff221,diff222,diff223,disua,disla,disw,UUU,Sua2,Sla2,Sw2,
         %lg2= size(wlap)
         %ag= size(Thetauapp(:,startIdxua:endIdxua))
         %ag2= size(wuap)
-        wjxpua = Thetauapp(:,startIdxua:endIdxua)*wuap;
+        wjxpua = Thetauapp(:,startIdxua:endIdxua)*wuap';
 
-        wjxpla = Thetalapp(:,startIdxla:endIdxla)*wlap;
+        wjxpla = Thetalapp(:,startIdxla:endIdxla)*wlap';
         
-        wjxpw = Thetawpp(:,startIdxw:endIdxw)*wwp;
+        wjxpw = Thetawpp(:,startIdxw:endIdxw)*wwp';
         
         wuap2 = wuap;
         uuap2 = uuap;
@@ -130,9 +130,9 @@ function [hist2,UUP2,diff221,diff222,diff223,disua,disla,disw,UUU,Sua2,Sla2,Sw2,
        %[s1,s11]= size(wuapv)
        %[s2,s22]= size(Thetauappdt)
        
-        uacp = Thetauappdt(:,startIdxua:endIdxua)*wuap;
-        lacp = Thetalappdt(:,startIdxla:endIdxla)*wlap;
-        wcp = Thetawppdt(:,startIdxw:endIdxw)*wwp;
+        uacp = Thetauappdt(:,startIdxua:endIdxua)*wuap';
+        lacp = Thetalappdt(:,startIdxla:endIdxla)*wlap';
+        wcp = Thetawppdt(:,startIdxw:endIdxw)*wwp';
 
         ua3=0.5*(1-tanh(3*(2*disua/model.lvua-1)));
         la3=0.5*(1-tanh(3*(2*disla/model.lvla-1)));
