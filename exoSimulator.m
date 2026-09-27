@@ -1072,7 +1072,7 @@ function tau_human = human_effort(q, qd, q_d, mode, tau_hu, K_healthy, B_healthy
 
     tau_human = tau_hu;
     tau_healthy_intent = K_intent * (q_d - q);
-    tau_pathology = -K_spastic * (q - q_rest_stroke) - B_spastic .* qd;
+    tau_pathology = -K_spastic * (q - q_rest_stroke) - B_spastic * qd;
     tau_healthy_passive = (-K_healthy * (q - q_rest_healthy) - B_healthy * qd)/5000;
     switch mode
                  case 'passive'
